@@ -33,6 +33,11 @@ public class InvoiceReply {
     }
 
     @Override
+    public String toString() {
+        return "InvoiceReply{" + "id=" + id + ", price=" + price + '}';
+    }
+
+    @Override
     public int hashCode() {
         int hash = 3;
         hash = 59 * hash + Objects.hashCode(this.id);
