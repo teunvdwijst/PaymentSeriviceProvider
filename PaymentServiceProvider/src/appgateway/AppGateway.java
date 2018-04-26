@@ -49,10 +49,9 @@ public class AppGateway {
                     ActiveMQTextMessage message = (ActiveMQTextMessage) msg;
                     InvoiceRequest lr = serializer.requestFromString(message.getText());
                     lr.setId(msg.getJMSMessageID());
-//                    System.out.println(lr.toString());
+                    System.out.println(lr.toString());
                     list.add(lr.toString());
-//                    newReply(new InvoiceReply("1", "payed"));
-                    System.out.println(new InvoiceReply(msg.getJMSMessageID(), "payed").toString());
+                    newReply(new InvoiceReply("1", "payed"));
                 } catch (JMSException ex) {
                     Logger.getLogger(AppGateway.class.getName()).log(Level.SEVERE, null, ex);
                 }

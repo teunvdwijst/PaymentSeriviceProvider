@@ -7,6 +7,8 @@ package invoicegenerator;
 
 import appgateway.AppGateway;
 import domain.InvoiceRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -31,7 +33,8 @@ public class InvoiceGenerator extends Application {
     final Label notification = new Label();
     final TextField subject = new TextField("0.00");
     final ComboBox cbPaymentMethod = new ComboBox();
-    AppGateway gateway;
+    final List<String> gsonReplies = new ArrayList();
+    final AppGateway gateway = new AppGateway("ClientToPSP", "PSPToClient");
 
     private void SendInvoice() {
         gateway.newRequest(new InvoiceRequest(null, Double.parseDouble(subject.getText()), cbPaymentMethod.getValue().toString()));
@@ -69,7 +72,7 @@ public class InvoiceGenerator extends Application {
         grid.add(button, 0, 3);
         grid.add(notification, 1, 3, 3, 1);
 
-        gateway = new AppGateway("ClientToPSP", "PSPToClient");
+        gateway.onReplyArrived(gsonReplies);
 
         Group root = (Group) scene.getRoot();
         root.getChildren().add(grid);
