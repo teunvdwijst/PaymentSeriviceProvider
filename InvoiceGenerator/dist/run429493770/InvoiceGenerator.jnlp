@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="InvoiceGenerator.jar" size="3090" download="eager" />
+    <jar href="InvoiceGenerator.jar" size="2561" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="InvoiceGenerator" >
     <param name="requiredFXVersion" value="8.0+"/>
