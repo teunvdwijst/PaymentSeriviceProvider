@@ -10,13 +10,15 @@ public class InvoiceRequest {
 
     private String id;
     private double price;
+    private String paymentMethod;
 
     public InvoiceRequest() {
     }
 
-    public InvoiceRequest(String id, double price) {
+    public InvoiceRequest(String id, double price, String paymentMethod) {
         this.id = id;
         this.price = price;
+        this.paymentMethod = paymentMethod;
     }
 
     public String getId() {
@@ -35,16 +37,25 @@ public class InvoiceRequest {
         this.price = price;
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     @Override
     public String toString() {
-        return "InvoiceRequest{" + "id=" + id + ", price=" + price + '}';
+        return "InvoiceRequest{" + "id=" + id + ", price=" + price + ", paymentMethod=" + paymentMethod + '}';
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 13 * hash + Objects.hashCode(this.id);
-        hash = 13 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
+        hash = 17 * hash + Objects.hashCode(this.id);
+        hash = 17 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
+        hash = 17 * hash + Objects.hashCode(this.paymentMethod);
         return hash;
     }
 
@@ -63,6 +74,9 @@ public class InvoiceRequest {
         if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
             return false;
         }
-        return Objects.equals(this.id, other.id);
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return Objects.equals(this.paymentMethod, other.paymentMethod);
     }
 }

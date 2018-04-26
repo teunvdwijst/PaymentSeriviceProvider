@@ -25,11 +25,11 @@ public class PaymentServiceProvider {
         AppGateway gateway = new AppGateway("ChannelName", "ChannelName");
         gateway.onReplyArrived(gsonRequests);
 
-        InvoiceRequest req1 = new InvoiceRequest("0", 1.05);
-        InvoiceRequest req2 = new InvoiceRequest("0", 1.10);
-        InvoiceRequest req3 = new InvoiceRequest("0", 1.12);
-        InvoiceRequest req4 = new InvoiceRequest("0", 1.13);
-        InvoiceRequest req5 = new InvoiceRequest("0", 1.15);
+        InvoiceRequest req1 = new InvoiceRequest("0", 1.05, "PayPal");
+        InvoiceRequest req2 = new InvoiceRequest("0", 1.10, "PayPal");
+        InvoiceRequest req3 = new InvoiceRequest("0", 1.12, "PayPal");
+        InvoiceRequest req4 = new InvoiceRequest("0", 1.13, "Google Pay");
+        InvoiceRequest req5 = new InvoiceRequest("0", 1.15, "Google Pay");
 
         gateway.newRequest(req1);
         gateway.newRequest(req2);
