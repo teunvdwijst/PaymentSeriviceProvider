@@ -21,20 +21,20 @@ public class PaymentServiceProvider {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        final List<String> gsonRequests = new ArrayList();
-        AppGateway gateway = new AppGateway("ChannelName", "ChannelName");
-        gateway.onReplyArrived(gsonRequests);
+        final List<String> gsonReplies = new ArrayList();
+        AppGateway gateway = new AppGateway("PSPToClient", "ClientToPSP");
+        gateway.onReplyArrived(gsonReplies);
 
-        InvoiceRequest req1 = new InvoiceRequest("0", 1.05, "PayPal");
-        InvoiceRequest req2 = new InvoiceRequest("0", 1.10, "PayPal");
-        InvoiceRequest req3 = new InvoiceRequest("0", 1.12, "PayPal");
-        InvoiceRequest req4 = new InvoiceRequest("0", 1.13, "Google Pay");
-        InvoiceRequest req5 = new InvoiceRequest("0", 1.15, "Google Pay");
-
-        gateway.newRequest(req1);
-        gateway.newRequest(req2);
-        gateway.newRequest(req3);
-        gateway.newRequest(req4);
-        gateway.newRequest(req5);
+//        InvoiceRequest req1 = new InvoiceRequest("0", 1.05, "PayPal");
+//        InvoiceRequest req2 = new InvoiceRequest("0", 1.10, "PayPal");
+//        InvoiceRequest req3 = new InvoiceRequest("0", 1.12, "PayPal");
+//        InvoiceRequest req4 = new InvoiceRequest("0", 1.13, "Google Pay");
+//        InvoiceRequest req5 = new InvoiceRequest("0", 1.15, "Google Pay");
+//
+//        gateway.newRequest(req1);
+//        gateway.newRequest(req2);
+//        gateway.newRequest(req3);
+//        gateway.newRequest(req4);
+//        gateway.newRequest(req5);
     }
 }

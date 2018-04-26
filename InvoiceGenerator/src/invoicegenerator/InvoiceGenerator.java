@@ -5,6 +5,8 @@
  */
 package invoicegenerator;
 
+import appgateway.AppGateway;
+import domain.InvoiceRequest;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -27,15 +29,26 @@ public class InvoiceGenerator extends Application {
 
     final Button button = new Button("Send");
     final Label notification = new Label();
-    final TextField subject = new TextField("");
+    final TextField subject = new TextField("0.00");
+    final ComboBox cbPaymentMethod = new ComboBox();
+    AppGateway gateway;
 
     private void SendInvoice() {
-        // TO DO implement JMS sending of an invoice
+        gateway.newRequest(new InvoiceRequest(null, Double.parseDouble(subject.getText()), cbPaymentMethod.getValue().toString()));
     }
 
     @Override
     public void start(Stage primaryStage) {
-        Pattern pattern = Pattern.compile("\\d+|\\d+\\,\\d{1,2}");
+        primaryStage.setTitle("InvoiceGenerator");
+        Scene scene = new Scene(new Group(), 450, 250);
+        cbPaymentMethod.getItems().addAll(
+                "PayPal",
+                "IDeal",
+                "Google Pay"
+        );
+        cbPaymentMethod.setValue("PayPal");
+
+        Pattern pattern = Pattern.compile("\\d+\\.\\d{2}");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return pattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
@@ -44,15 +57,6 @@ public class InvoiceGenerator extends Application {
         button.setOnAction(e -> {
             SendInvoice();
         });
-        primaryStage.setTitle("InvoiceGenerator");
-        Scene scene = new Scene(new Group(), 450, 250);
-
-        final ComboBox cbPaymentMethod = new ComboBox();
-        cbPaymentMethod.getItems().addAll(
-                "IDeal",
-                "PayPal",
-                "Google Pay"
-        );
 
         GridPane grid = new GridPane();
         grid.setVgap(4);
@@ -64,6 +68,8 @@ public class InvoiceGenerator extends Application {
         grid.add(subject, 1, 1, 3, 1);
         grid.add(button, 0, 3);
         grid.add(notification, 1, 3, 3, 1);
+
+        gateway = new AppGateway("ClientToPSP", "PSPToClient");
 
         Group root = (Group) scene.getRoot();
         root.getChildren().add(grid);
@@ -80,5 +86,4 @@ public class InvoiceGenerator extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
