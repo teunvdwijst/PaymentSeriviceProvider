@@ -8,27 +8,30 @@ import java.util.Objects;
  */
 public class InvoiceRequest {
 
-    private Long id;
-    private float price;
+    private String id;
+    private double price;
 
-    public InvoiceRequest(Long id, float price) {
+    public InvoiceRequest() {
+    }
+
+    public InvoiceRequest(String id, double price) {
         this.id = id;
         this.price = price;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -40,8 +43,8 @@ public class InvoiceRequest {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.id);
-        hash = 71 * hash + Float.floatToIntBits(this.price);
+        hash = 13 * hash + Objects.hashCode(this.id);
+        hash = 13 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
         return hash;
     }
 
@@ -57,7 +60,7 @@ public class InvoiceRequest {
             return false;
         }
         final InvoiceRequest other = (InvoiceRequest) obj;
-        if (Float.floatToIntBits(this.price) != Float.floatToIntBits(other.price)) {
+        if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
             return false;
         }
         return Objects.equals(this.id, other.id);

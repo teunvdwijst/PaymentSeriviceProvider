@@ -44,7 +44,8 @@ public class MessageSenderGateway {
             sendDestination = (Destination) jndiContext.lookup(channelName);
             producer = session.createProducer(sendDestination);
         } catch (NamingException | JMSException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("ERROR; " + e.getMessage());
         }
     }
 

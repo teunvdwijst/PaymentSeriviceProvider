@@ -1,7 +1,8 @@
 package appgateway;
 
-import domain.InvoiceReply;
 import domain.InvoiceRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jms.JMSException;
@@ -17,12 +18,12 @@ public class AppGateway {
 
     private final MessageSenderGateway sender;
     private final MessageReceiverGateway receiver;
-    private final LoanSerializer serializer;
+    private final Serializer serializer;
 
     public AppGateway(String senderChannelName, String receiverChannelName) {
         sender = new MessageSenderGateway(senderChannelName);
         receiver = new MessageReceiverGateway(receiverChannelName);
-        serializer = new LoanSerializer();
+        serializer = new Serializer();
     }
 
     public void newRequest(InvoiceRequest request) {
@@ -31,13 +32,16 @@ public class AppGateway {
         sender.send(msg);
     }
 
-    public void onLoanReplyArrived(InvoiceRequest request, InvoiceReply reply) {
+    public void onReplyArrived(List<String> list) {
         receiver.setListener(new MessageListener() {
             @Override
             public void onMessage(Message msg) {
                 try {
                     ActiveMQTextMessage message = (ActiveMQTextMessage) msg;
-                    InvoiceReply lr = serializer.replyFromString(message.getText());
+                    InvoiceRequest lr = serializer.requestFromString(message.getText());
+                    lr.setId(msg.getJMSMessageID());
+                    System.out.println(lr.toString());
+                    list.add(lr.toString());
                 } catch (JMSException ex) {
                     Logger.getLogger(AppGateway.class.getName()).log(Level.SEVERE, null, ex);
                 }

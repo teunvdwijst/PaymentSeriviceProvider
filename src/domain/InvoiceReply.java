@@ -8,28 +8,46 @@ import java.util.Objects;
  */
 public class InvoiceReply {
 
-    private Long id;
-    private float price;
+    private String id;
+    private double price;
+    private InvoiceRequest request;
 
-    public InvoiceReply(Long id, float price) {
+    public InvoiceReply() {
+    }
+
+    public InvoiceReply(String id, double price) {
         this.id = id;
         this.price = price;
     }
 
-    public Long getId() {
+    public InvoiceReply(String id, double price, InvoiceRequest request) {
+        this.id = id;
+        this.price = price;
+        this.request = request;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public InvoiceRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(InvoiceRequest request) {
+        this.request = request;
     }
 
     @Override
@@ -39,9 +57,9 @@ public class InvoiceReply {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + Float.floatToIntBits(this.price);
+        int hash = 7;
+        hash = 43 * hash + Objects.hashCode(this.id);
+        hash = 43 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
         return hash;
     }
 
@@ -57,7 +75,7 @@ public class InvoiceReply {
             return false;
         }
         final InvoiceReply other = (InvoiceReply) obj;
-        if (Float.floatToIntBits(this.price) != Float.floatToIntBits(other.price)) {
+        if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
             return false;
         }
         return Objects.equals(this.id, other.id);

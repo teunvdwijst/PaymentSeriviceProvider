@@ -7,26 +7,26 @@ import domain.*;
  *
  * @author Teun
  */
-public class LoanSerializer {
+public class Serializer {
 
-    public LoanSerializer() {
+    private final Genson genson = new Genson();
+
+    public Serializer() {
     }
 
     public String requestToString(InvoiceRequest request) {
-        return new Genson().serialize(request);
-
+        return genson.serialize(request);
     }
 
     public InvoiceRequest requestFromString(String str) {
-        return new Genson().deserialize(str, InvoiceRequest.class);
-
+        return genson.deserialize(str, InvoiceRequest.class);
     }
 
     public String replyToString(InvoiceReply reply) {
-        return new Genson().serialize(reply);
+        return genson.serialize(reply);
     }
 
     public InvoiceReply replyFromString(String str) {
-        return new Genson().deserialize(str, InvoiceReply.class);
+        return genson.deserialize(str, InvoiceReply.class);
     }
 }
