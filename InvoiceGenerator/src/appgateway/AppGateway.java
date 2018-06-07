@@ -2,9 +2,12 @@ package appgateway;
 
 import domain.InvoiceReply;
 import domain.InvoiceRequest;
+import domain.TableRow;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -41,18 +44,20 @@ public class AppGateway {
         sender.send(msg);
     }
 
-    public void onReplyArrived(List<String> list) {
+    public void onReplyArrived(ObservableList<TableRow> list) {
         receiver.setListener(new MessageListener() {
             @Override
             public void onMessage(Message msg) {
                 try {
                     ActiveMQTextMessage message = (ActiveMQTextMessage) msg;
-                    InvoiceRequest lr = serializer.requestFromString(message.getText());
-                    lr.setId(msg.getJMSMessageID());
-//                    System.out.println(lr.toString());
-                    list.add(lr.toString());
-//                    newReply(new InvoiceReply("1", "payed"));
-                    System.out.println(new InvoiceReply(msg.getJMSMessageID(), "payed").toString());
+                    InvoiceReply ir = serializer.replyFromString(message.getText());
+
+                    InvoiceRequest request = ir.getRequest();
+                    list.add(new TableRow(request.toString(), ir.toString()));
+                    // set id to null to remove old tablerow item with id=null
+
+                    request.setId(null);
+                    list.remove(new TableRow(ir.getRequest().toString(), ""));
                 } catch (JMSException ex) {
                     Logger.getLogger(AppGateway.class.getName()).log(Level.SEVERE, null, ex);
                 }

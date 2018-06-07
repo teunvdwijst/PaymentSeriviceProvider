@@ -8,24 +8,25 @@ import java.util.Objects;
  */
 public class InvoiceRequest {
 
-    private String id;
+    private Long id;
+    private String currency;
     private double price;
     private String paymentMethod;
 
     public InvoiceRequest() {
     }
 
-    public InvoiceRequest(String id, double price, String paymentMethod) {
-        this.id = id;
+    public InvoiceRequest(double price, String currency, String paymentMethod) {
         this.price = price;
+        this.currency = currency;
         this.paymentMethod = paymentMethod;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,17 +46,23 @@ public class InvoiceRequest {
         this.paymentMethod = paymentMethod;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     @Override
     public String toString() {
-        return "InvoiceRequest{" + "id=" + id + ", price=" + price + ", paymentMethod=" + paymentMethod + '}';
+        return "id=" + id + ", price=" + price + ", currency=" + currency + ", paymentMethod=" + paymentMethod;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.id);
-        hash = 17 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
-        hash = 17 * hash + Objects.hashCode(this.paymentMethod);
+        hash = 89 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -71,12 +78,6 @@ public class InvoiceRequest {
             return false;
         }
         final InvoiceRequest other = (InvoiceRequest) obj;
-        if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.paymentMethod, other.paymentMethod);
+        return Objects.equals(this.id, other.id);
     }
 }

@@ -8,22 +8,26 @@ import java.util.Objects;
  */
 public class InvoiceReply {
 
-    private String id;
+    private Long id;
     private String status;
+    private String intent;
+    private String createTime;
+    private InvoiceRequest request;
 
     public InvoiceReply() {
     }
 
-    public InvoiceReply(String id, String status) {
-        this.id = id;
+    public InvoiceReply(String status, String intent, String createTime) {
         this.status = status;
+        this.intent = intent;
+        this.createTime = createTime;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,16 +39,39 @@ public class InvoiceReply {
         this.status = status;
     }
 
+    public InvoiceRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(InvoiceRequest request) {
+        this.request = request;
+    }
+
+    public String getIntent() {
+        return intent;
+    }
+
+    public void setIntent(String intent) {
+        this.intent = intent;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
-        return "InvoiceReply{" + "id=" + id + ", status=" + status + '}';
+        return "id=" + id + ", status=" + status + ", intent=" + intent + ", createTime=" + createTime;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.status);
+        hash = 73 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -60,9 +87,6 @@ public class InvoiceReply {
             return false;
         }
         final InvoiceReply other = (InvoiceReply) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.status, other.status);
+        return Objects.equals(this.id, other.id);
     }
 }
