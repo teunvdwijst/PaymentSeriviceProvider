@@ -6,12 +6,9 @@
 package invoicegenerator;
 
 import appgateway.AppGateway;
-import domain.InvoiceReply;
 import domain.InvoiceRequest;
 import domain.TableRow;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -46,10 +43,10 @@ public class InvoiceGenerator extends Application {
     final TableView table = new TableView();
     final AppGateway gateway = new AppGateway("ClientToPSP", "PSPToClient");
     private final ObservableList<TableRow> data = FXCollections.observableArrayList();
+    private final Map<String, TableRow> test = new HashMap();
 
     private InvoiceRequest SendInvoice() {
         InvoiceRequest request = new InvoiceRequest(Double.parseDouble(subject.getText()), "EUR", cbPaymentMethod.getValue().toString().toLowerCase());
-        gateway.newRequest(request);
         return request;
     }
 
@@ -84,7 +81,10 @@ public class InvoiceGenerator extends Application {
         subject.setTextFormatter(formatter);
         button.setOnAction(e -> {
             InvoiceRequest request = SendInvoice();
-            data.add(new TableRow(request.toString(), ""));
+            String messageId = gateway.newRequest(request);
+            TableRow temp = new TableRow(request.toString(), "");
+            test.put(messageId, temp);
+            data.add(temp);
         });
 
         GridPane grid = new GridPane();
@@ -99,7 +99,7 @@ public class InvoiceGenerator extends Application {
         grid.add(notification, 1, 3, 3, 1);
         grid.add(table, 0, 5, 5, 1);
 
-        gateway.onReplyArrived(data);
+        gateway.onReplyArrived(data, test);
 
         Group root = (Group) scene.getRoot();
         root.getChildren().add(grid);

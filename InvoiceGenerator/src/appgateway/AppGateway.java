@@ -29,9 +29,9 @@ public class AppGateway {
         serializer = new Serializer();
     }
 
-    public void newRequest(InvoiceRequest request) {
+    public String newRequest(InvoiceRequest request) {
         String gson = serializer.requestToString(request);
-        sendMessage(gson);
+        return sendMessage(gson);
     }
 
     public void newReply(InvoiceReply reply) {
@@ -39,25 +39,31 @@ public class AppGateway {
         sendMessage(gson);
     }
 
-    private void sendMessage(String message) {
+    private String sendMessage(String message) {
         Message msg = sender.createTextMessage(message);
-        sender.send(msg);
+        try {
+            sender.send(msg);
+            return msg.getJMSMessageID();
+        } catch (JMSException ex) {
+            Logger.getLogger(AppGateway.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
     }
 
-    public void onReplyArrived(ObservableList<TableRow> list) {
+    public void onReplyArrived(ObservableList<TableRow> list, Map<String, TableRow> map) {
         receiver.setListener(new MessageListener() {
             @Override
             public void onMessage(Message msg) {
                 try {
                     ActiveMQTextMessage message = (ActiveMQTextMessage) msg;
                     InvoiceReply ir = serializer.replyFromString(message.getText());
+                    String correlationId = message.getCorrelationId();
+                    list.remove(map.get(correlationId));
 
                     InvoiceRequest request = ir.getRequest();
-                    list.add(new TableRow(request.toString(), ir.toString()));
-                    // set id to null to remove old tablerow item with id=null
-
-                    request.setId(null);
-                    list.remove(new TableRow(ir.getRequest().toString(), ""));
+                    TableRow newRow = new TableRow(request.toString(), ir.toString());
+                    map.put(correlationId, newRow);
+                    list.add(newRow);
                 } catch (JMSException ex) {
                     Logger.getLogger(AppGateway.class.getName()).log(Level.SEVERE, null, ex);
                 }

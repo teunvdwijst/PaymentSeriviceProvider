@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="InvoiceGenerator.jar" size="13646" download="eager" />
+    <jar href="InvoiceGenerator.jar" size="14203" download="eager" />
     <jar href="lib\activemq-all-5.15.3.jar" size="18104253" download="eager" />
     <jar href="lib\activemq-broker-5.15.3.jar" size="1185168" download="eager" />
     <jar href="lib\activemq-client-5.15.3.jar" size="1428411" download="eager" />
