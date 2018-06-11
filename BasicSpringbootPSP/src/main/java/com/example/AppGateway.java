@@ -1,9 +1,5 @@
 package com.example;
 
-import static com.example.PayPalApiKeys.*;
-import com.paypal.api.payments.Payment;
-import com.paypal.base.rest.APIContext;
-import com.paypal.base.rest.PayPalRESTException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jms.JMSException;
@@ -61,7 +57,7 @@ public class AppGateway {
                     LOGGER.log(Level.INFO, "Received request: {0}", request.toString());
 
                     // handle request
-                    InvoiceReply reply = handleInvoiceRequest(request);
+                    InvoiceReply reply = InvoiceRequestRouter.handleInvoiceRequest(request);
 
                     // save reply to database
                     replyRepository.save(reply);
@@ -73,37 +69,5 @@ public class AppGateway {
                 }
             }
         });
-    }
-
-    private static InvoiceReply handleInvoiceRequest(InvoiceRequest request) {
-        switch (request.getPaymentMethod().toLowerCase()) {
-            case "paypal":
-
-                try {
-                    Payment payment = InvoiceTranslator.toPayPalInvoice(request);
-
-                    APIContext apiContext = new APIContext(clientId, clientSecret, "sandbox");
-                    Payment createdPayment = payment.create(apiContext);
-                    // For debug purposes only: 
-                    // System.out.println(createdPayment.toString());
-
-                    InvoiceReply reply = InvoiceTranslator.toInvoiceReply(createdPayment);
-                    reply.setRequest(request);
-                    return reply;
-                } catch (PayPalRESTException ex) {
-                    Logger.getLogger(AppGateway.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            case "ideal":
-
-                return null;
-
-            case "google pay":
-
-                return null;
-
-            default:
-                return null;
-        }
     }
 }
