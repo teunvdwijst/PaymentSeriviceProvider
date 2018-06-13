@@ -1,20 +1,13 @@
-package com.example;
+package domain;
 
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
  * @author Teun
  */
-@Entity
 public class InvoiceRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String currency;
     private double price;
@@ -73,7 +66,7 @@ public class InvoiceRequest {
 
     @Override
     public String toString() {
-        return "InvoiceRequest{" + "id=" + id + ", price=" + price + ", currency=" + currency + ", paymentMethod=" + paymentMethod + '}';
+        return "id=" + id + ", price=" + price + ", currency=" + currency + ", paymentMethod=" + paymentMethod;
     }
 
     @Override

@@ -26,7 +26,10 @@ public class Init implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        AppGateway gateway = new AppGateway("PSPToClient", "ClientToPSP");
-        gateway.onRequestArrived(requestRepository, replyRepository);
+        AppGateway gatewayClient1 = new AppGateway("PSPToClient1", "Client1ToPSP");
+        AppGateway gatewayClient2 = new AppGateway("PSPToClient2", "Client2ToPSP");
+
+        gatewayClient1.onRequestArrived(requestRepository, replyRepository);
+        gatewayClient2.onRequestArrived(requestRepository, replyRepository);
     }
 }
